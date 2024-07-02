@@ -32,8 +32,12 @@ def main():
         download=True,
         train=False,
     )
-    dataset_full = torch.utils.data.ConcatDataset([dataset_train, dataset_test])
-
+    dataset_full = torch.utils.data.ConcatDataset(
+        [dataset_train, dataset_test]*10
+    )
+    dataset_full_test = torch.utils.data.ConcatDataset(
+        [dataset_train, dataset_test]
+    )
     # create the object (here we run t-SimCNE with fewer epochs
     # than in the paper; there we used [1000, 50, 450]).
     # tsimcne = TSimCNE(total_epochs=[500, 50, 250])
@@ -47,10 +51,10 @@ def main():
     tsimcne.fit(dataset_full)
 
     # map the original images to 2D
-    Y = tsimcne.transform(dataset_full)
+    Y = tsimcne.transform(dataset_full_test)
 
     # get the original labels from the dataset
-    labels = [lbl for img, lbl in dataset_full]
+    labels = [lbl for img, lbl in dataset_full_test]
 
     # plot the data
     fig, ax = plt.subplots(figsize=(10, 10))
