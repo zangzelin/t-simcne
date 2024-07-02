@@ -10,11 +10,15 @@ def main():
     
     # argparse
     parser = argparse.ArgumentParser(description='t-SimCNE')
-    parser.add_argument('--epochs', type=int, nargs='+', default=[500, 50, 250], help='epochs for each stage')
+    parser.add_argument('--epochs_step1', type=int, default=500, help='epochs for each stage')
+    parser.add_argument('--epochs_step2', type=int, default=50, help='epochs for each stage')
+    parser.add_argument('--epochs_step3', type=int, default=250, help='epochs for each stage')
     parser.add_argument('--seed', type=int, default=0, help='random seed')
     parser.add_argument('--devices', type=int, default=1, help='number of devices')
     
     args = parser.parse_args()
+    
+    args.epochs = [args.epochs_step1, args.epochs_step2, args.epochs_step3]
     
     # get the cifar dataset (make sure to adapt `data_root` to point to your folder)
     data_root = "/zangzelin/data/cifar-10"
