@@ -10,7 +10,7 @@ def main():
     
     # argparse
     parser = argparse.ArgumentParser(description='t-SimCNE')
-    parser.add_argument('--epochs', type=int, nargs='+', default=[1000, 50, 450], help='epochs for each stage')
+    parser.add_argument('--epochs', type=int, nargs='+', default=[500, 50, 250], help='epochs for each stage')
     parser.add_argument('--seed', type=int, default=0, help='random seed')
     parser.add_argument('--devices', type=int, default=1, help='number of devices')
     
@@ -56,3 +56,6 @@ def main():
     ax.scatter(*Y.T, c=labels, cmap="tab10", s=1, )
     wandb.log({"tsne": plt})
     wandb.finish()
+    
+if __name__ == "__main__":
+    main()
