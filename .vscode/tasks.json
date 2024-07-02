@@ -6,7 +6,7 @@
         {
             "label": "gitAddCommitPush",
             "type": "shell",
-            "command": "git add . && git commit -m 'auto push' && git push",
+            "command": "export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890 && git add . && git commit -m 'auto push' && git push",
             "problemMatcher": [],
             "group": {
                 "kind": "build",
