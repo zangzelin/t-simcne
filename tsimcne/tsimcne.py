@@ -532,7 +532,7 @@ class TSimCNE:
                 max_epochs=n_epochs,
                 devices=self.devices,
                 **self.trainer_kwargs,
-                accelerator="cpu"
+                accelerator="gpu"
                 strategy="ddp" if self.devices > 1 else None,
             )
             trainer.fit(model=plmodel, train_dataloaders=train_dl)
