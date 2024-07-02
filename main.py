@@ -52,7 +52,7 @@ def main():
     labels = [lbl for img, lbl in dataset_full]
 
     # plot the data
-    fig, ax = plt.subplots()
-    ax.scatter(*Y.T, c=labels)
+    fig, ax = plt.subplots(figsize=(10, 10))
+    ax.scatter(*Y.T, c=labels, cmap="tab10", s=1, )
     wandb.log({"tsne": plt})
     wandb.finish()
