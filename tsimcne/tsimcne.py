@@ -397,7 +397,7 @@ class TSimCNE:
             )
 
         trainer_kwargs = dict(
-            gradient_clip_val=4, gradient_clip_algorithm="value"
+            gradient_clip_val=0.5, gradient_clip_algorithm="norm"
         )
         if self.trainer_kwargs is None:
             self.trainer_kwargs = trainer_kwargs
@@ -533,7 +533,8 @@ class TSimCNE:
                 devices=self.devices,
                 **self.trainer_kwargs,
                 accelerator="gpu",
-                strategy="deepspeed" ,
+                strategy="deepspeed",
+                # gradient_clip_algorithm="norm",
             )
             trainer.fit(model=plmodel, train_dataloaders=train_dl)
             self.models.append(plmodel)
