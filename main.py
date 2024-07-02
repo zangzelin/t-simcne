@@ -19,7 +19,8 @@ dataset_full = torch.utils.data.ConcatDataset([dataset_train, dataset_test])
 
 # create the object (here we run t-SimCNE with fewer epochs
 # than in the paper; there we used [1000, 50, 450]).
-tsimcne = TSimCNE(total_epochs=[500, 50, 250])
+# tsimcne = TSimCNE(total_epochs=[500, 50, 250])
+tsimcne = TSimCNE(total_epochs=[1000, 50, 450])
 
 # train on the augmented/contrastive dataloader (this takes the most time)
 tsimcne.fit(dataset_full)
@@ -33,4 +34,4 @@ labels = [lbl for img, lbl in dataset_full]
 # plot the data
 fig, ax = plt.subplots()
 ax.scatter(*Y.T, c=labels)
-fig.savefig("tsimcne.png")
+fig.savefig("tsimcne[1000, 50, 450].png")
