@@ -487,7 +487,7 @@ class TSimCNE:
                 batch_size=self.batch_size,
                 optimizer_name=self.optimizer,
                 lr_scheduler_name=self.lr_scheduler,
-                lr=lr,
+                lr=lr*self.devices,
                 warmup=warmup_epochs,
                 pretrain_out_dim=self.pretrain_out_dim,
                 out_dim=self.out_dim,
