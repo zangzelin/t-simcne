@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 from tsimcne.tsimcne import TSimCNE
 
 # get the cifar dataset (make sure to adapt `data_root` to point to your folder)
-data_root = "experiments/cifar/out/cifar10"
+data_root = "/zangzelin/data/cifar-10"
 dataset_train = torchvision.datasets.CIFAR10(
     root=data_root,
     download=True,
