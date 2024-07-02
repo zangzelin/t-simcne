@@ -40,6 +40,7 @@ def main():
     tsimcne = TSimCNE(
         total_epochs=args.epochs,
         devices=args.devices,
+        num_workers=16,
         )
 
     # train on the augmented/contrastive dataloader (this takes the most time)
