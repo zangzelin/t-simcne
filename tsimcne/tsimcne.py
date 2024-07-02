@@ -533,7 +533,7 @@ class TSimCNE:
                 devices=self.devices,
                 **self.trainer_kwargs,
                 accelerator="gpu",
-                strategy="deepspeed",
+                # strategy="deepspeed",
                 # gradient_clip_algorithm="norm",
             )
             trainer.fit(model=plmodel, train_dataloaders=train_dl)
