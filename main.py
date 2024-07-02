@@ -16,10 +16,6 @@ def main():
     
     args = parser.parse_args()
     
-    
-    
-    wandb.init(project="tsimcne")
-
     # get the cifar dataset (make sure to adapt `data_root` to point to your folder)
     data_root = "/zangzelin/data/cifar-10"
     dataset_train = torchvision.datasets.CIFAR10(
@@ -54,6 +50,7 @@ def main():
     # plot the data
     fig, ax = plt.subplots(figsize=(10, 10))
     ax.scatter(*Y.T, c=labels, cmap="tab10", s=1, )
+    wandb.init(project="tsimcne")
     wandb.log({"tsne": plt})
     wandb.finish()
     
