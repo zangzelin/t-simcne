@@ -404,11 +404,11 @@ class MLPZZL(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x, layer=100):
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         x = x.reshape(x.shape[0], -1)
         
         # out = F.relu(self.bn1(self.conv1(x)), inplace=True)
-        out = self.layer1(out)
+        out = self.layer1(x)
         out = self.layer2(out)
         out = self.layer3(out)
         out = self.layer4(out)
