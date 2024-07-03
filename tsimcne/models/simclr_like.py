@@ -341,15 +341,38 @@ class MLPZZL(nn.Module):
         super(MLPZZL, self).__init__()
         self.in_planes = 64
 
-        self.conv1 = nn.Conv2d(
-            in_channel, 64, kernel_size=3, stride=1, padding=1, bias=False
+        # self.conv1 = nn.Conv2d(
+        #     in_channel, 64, kernel_size=3, stride=1, padding=1, bias=False
+        # )
+        # self.bn1 = nn.BatchNorm2d(64)
+        self.layer1 = nn.Sequential(
+            nn.Linear(3*32*32, 3*32*32),
+            nn.ReLU(inplace=True),
+            nn.BatchNorm1d(3*32*32),
+            nn.Dropout(0.2),
         )
-        self.bn1 = nn.BatchNorm2d(64)
-        self.layer1 = self._make_layer(block, 64, num_blocks[0], stride=1)
-        self.layer2 = self._make_layer(block, 128, num_blocks[1], stride=2)
-        self.layer3 = self._make_layer(block, 256, num_blocks[2], stride=2)
-        self.layer4 = self._make_layer(block, 512, num_blocks[3], stride=2)
-        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
+        self.layer2 = nn.Sequential(
+            nn.Linear(3*32*32, 3*32*32),
+            nn.ReLU(inplace=True),
+            nn.BatchNorm1d(3*32*32),
+            nn.Dropout(0.2),
+        )
+
+        self.layer3 = nn.Sequential(
+            nn.Linear(3*32*32, 3*32*32),
+            nn.ReLU(inplace=True),
+            nn.BatchNorm1d(3*32*32),
+            nn.Dropout(0.2),
+        )
+
+        self.layer4 = nn.Sequential(
+            nn.Linear(3*32*32, 3*32*32),
+            nn.ReLU(inplace=True),
+            nn.BatchNorm1d(3*32*32),
+            nn.Dropout(0.2),
+            nn.Linear(3*32*32, 512),
+        )
+        # self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -382,13 +405,15 @@ class MLPZZL(nn.Module):
 
     def forward(self, x, layer=100):
         import pdb; pdb.set_trace()
-        out = F.relu(self.bn1(self.conv1(x)), inplace=True)
+        x = x.reshape(x.shape[0], -1)
+        
+        # out = F.relu(self.bn1(self.conv1(x)), inplace=True)
         out = self.layer1(out)
         out = self.layer2(out)
         out = self.layer3(out)
         out = self.layer4(out)
-        out = self.avgpool(out)
-        out = torch.flatten(out, 1)
+        # out = self.avgpool(out)
+        # out = torch.flatten(out, 1)
         return out
 
 
