@@ -331,6 +331,7 @@ class ResNet(nn.Module):
         out = self.layer4(out)
         out = self.avgpool(out)
         out = torch.flatten(out, 1)
+        import pdb; pdb.set_trace()
         return out
 
 
