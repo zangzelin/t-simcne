@@ -116,7 +116,7 @@ class InfoNCEZL(nn.Module):
         sim_bb = 1 / (torch.cdist(features_b, features_b) * self.temperature).square().add(1)
         sim_ab = 1 / (torch.cdist(features_a, features_b) * self.temperature).square().add(1)
 
-        tempered_alignment = (p*torch.diagonal(sim_ab).log()).mean()
+        tempered_alignment = (torch.diagonal(sim_ab).log()).mean()
 
         # exclude self inner product
         self_mask = torch.eye(batch_size, dtype=bool, device=sim_aa.device)
