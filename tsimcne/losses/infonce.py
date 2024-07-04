@@ -131,7 +131,14 @@ class InfoNCEZL(nn.Module):
             * torch.pow((1 + dist_rho / v), exponent=-1 * (v + 1))
         )
         return Pij
-
+    
+    def _TwowaydivergenceLoss(self, P_, Q_, select=None):
+        EPS = 1e-5
+        losssum1 = P_ * torch.log(Q_ + EPS)
+        losssum2 = (1 - P_) * torch.log(1 - Q_ + EPS)
+        losssum = -1 * (losssum1 + losssum2)
+        return losssum.mean()
+    
     def forward(self, features, backbone_features=None, labels=None):
         # backbone_features and labels are unused
         v_input=100
