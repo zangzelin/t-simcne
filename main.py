@@ -45,6 +45,8 @@ def main():
         total_epochs=args.epochs,
         devices=args.devices,
         num_workers=16,
+        loss='infonce',
+        metric='euclideanzl',
         # backbone='mlp_simclr',
         )
 
