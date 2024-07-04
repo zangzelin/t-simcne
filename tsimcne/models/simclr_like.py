@@ -331,7 +331,7 @@ class ResNet(nn.Module):
         out = self.layer4(out)
         out = self.avgpool(out)
         out = torch.flatten(out, 1)
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         return out
 
 
@@ -370,8 +370,8 @@ class MLPZZL(nn.Module):
             nn.Linear(3*32*32, 3*32*32),
             nn.ReLU(inplace=True),
             nn.BatchNorm1d(3*32*32),
-            nn.Dropout(0.2),
-            nn.Linear(3*32*32, 512),
+            # nn.Dropout(0.2),
+            # nn.Linear(3*32*32, 512),
         )
         # self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
 
