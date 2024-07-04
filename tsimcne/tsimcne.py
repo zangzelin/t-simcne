@@ -8,7 +8,7 @@ from .imagedistortions import (
     TransformedPairDataset,
     get_transforms_unnormalized,
 )
-from .losses.infonce import InfoNCECauchy, InfoNCECosine, InfoNCEGaussian
+from .losses.infonce import InfoNCECauchy, InfoNCECosine, InfoNCEGaussian, InfoNCEZL
 from .lrschedule import CosineAnnealingSchedule
 from .models.mutate_model import mutate_model
 from .models.simclr_like import make_model
@@ -68,6 +68,8 @@ class PLtSimCNE(pl.LightningModule):
 
             if self.metric == "euclidean":
                 self.loss = InfoNCECauchy()
+            if self.metric == "euclideanzl":
+                self.loss = InfoNCEZL()
             elif self.metric == "cosine":
                 self.loss = InfoNCECosine()
             elif self.metric == "gauss":
@@ -122,7 +124,11 @@ class PLtSimCNE(pl.LightningModule):
 
         features, backbone_features = self.model(samples)
         # backbone_features, _lbl are unused in infonce loss
-        loss = self.loss(features, backbone_features, _lbl)
+        
+        if self.metric == "euclideanzl":
+            loss = self.loss([features, features], backbone_features, _lbl)
+        else:
+            loss = self.loss(features, backbone_features, _lbl)
 
         self.log("train_loss", loss)
         return loss
