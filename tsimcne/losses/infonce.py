@@ -120,10 +120,16 @@ class InfoNCEZL(nn.Module):
         out = a / b
         return out
 
-    def _Similarity(self, dist, sigma=0.3):
+    def _Similarity_old(self, dist, gamma, v=100, h=1, pow=2):
         dist_rho = dist
+
         dist_rho[dist_rho < 0] = 0
-        Pij = torch.exp(-dist / (2 * sigma ** 2))
+        Pij = (
+            gamma
+            * torch.tensor(2 * 3.14)
+            * gamma
+            * torch.pow((1 + dist_rho / v), exponent=-1 * (v + 1))
+        )
         return Pij
 
     def forward(self, features, backbone_features=None, labels=None):
