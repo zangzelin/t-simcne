@@ -45,7 +45,7 @@ def main():
         total_epochs=args.epochs,
         devices=args.devices,
         num_workers=16,
-        # backbone='mlp_simclr',
+        backbone='mlp_simclr',
         )
 
     # train on the augmented/contrastive dataloader (this takes the most time)
