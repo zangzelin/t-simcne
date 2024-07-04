@@ -97,7 +97,7 @@ class InfoNCEZL(nn.Module):
         # backbone_features and labels are unused
         batch_size = features.size(0) // 2
 
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         
         backbone_features_a = backbone_features[:batch_size]
         backbone_features_b = backbone_features[batch_size:]
