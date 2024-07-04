@@ -99,14 +99,24 @@ class InfoNCEZL(nn.Module):
 
         import pdb; pdb.set_trace()
         
-        a = features[:batch_size]
-        b = features[batch_size:]
+        backbone_features_a = backbone_features[:batch_size]
+        backbone_features_b = backbone_features[batch_size:]
+        
+        # sim_baa = 1 / (torch.cdist(backbone_features_a, backbone_features_a) * self.temperature).square().add(1)
+        # sim_bbb = 1 / (torch.cdist(backbone_features_b, backbone_features_b) * self.temperature).square().add(1)
+        sim_bab = 1 / (torch.cdist(backbone_features_a, backbone_features_b) * self.temperature).square().add(1)
+        
+        p = torch.diagonal(sim_bab)
+        
+        
+        features_a = features[:batch_size]
+        features_b = features[batch_size:]
 
-        sim_aa = 1 / (torch.cdist(a, a) * self.temperature).square().add(1)
-        sim_bb = 1 / (torch.cdist(b, b) * self.temperature).square().add(1)
-        sim_ab = 1 / (torch.cdist(a, b) * self.temperature).square().add(1)
+        sim_aa = 1 / (torch.cdist(features_a, features_a) * self.temperature).square().add(1)
+        sim_bb = 1 / (torch.cdist(features_b, features_b) * self.temperature).square().add(1)
+        sim_ab = 1 / (torch.cdist(features_a, features_b) * self.temperature).square().add(1)
 
-        tempered_alignment = torch.diagonal(sim_ab).log().mean()
+        tempered_alignment = (p*torch.diagonal(sim_ab).log()).mean()
 
         # exclude self inner product
         self_mask = torch.eye(batch_size, dtype=bool, device=sim_aa.device)
