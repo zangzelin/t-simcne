@@ -367,9 +367,9 @@ class MLPZZL(nn.Module):
         )
 
         self.layer4 = nn.Sequential(
-            nn.Linear(3*32*32, 3*32*32),
+            nn.Linear(3*32*32, 512),
             nn.ReLU(inplace=True),
-            nn.BatchNorm1d(3*32*32),
+            nn.BatchNorm1d(512),
             # nn.Dropout(0.2),
             # nn.Linear(3*32*32, 512),
         )
