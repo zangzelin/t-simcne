@@ -104,9 +104,9 @@ class InfoNCEZL(nn.Module):
         
         # sim_baa = 1 / (torch.cdist(backbone_features_a, backbone_features_a) * self.temperature).square().add(1)
         # sim_bbb = 1 / (torch.cdist(backbone_features_b, backbone_features_b) * self.temperature).square().add(1)
-        sim_bab = 1 / (torch.cdist(backbone_features_a, backbone_features_b) * self.temperature).square().add(1)
+        # sim_bab = 1 / (torch.cdist(backbone_features_a, backbone_features_b) * self.temperature).square().add(1)
         
-        p = torch.diagonal(sim_bab)
+        # p = torch.diagonal(sim_bab)
         
         
         features_a = features[:batch_size]
