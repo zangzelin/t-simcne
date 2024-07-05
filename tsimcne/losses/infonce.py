@@ -157,21 +157,21 @@ class InfoNCEZL(nn.Module):
         latent_data_2 = features[batch_size:]
         
         # dis_Q_2 = 
-        sim_aa = self._Similarity_old(
-            dist=self._DistanceSquared(latent_data_1, latent_data_2)* self.temperature,
-            gamma=self._CalGamma(v_latent),
-            v=v_latent,
-        )
-        sim_bb = self._Similarity_old(
-            dist=self._DistanceSquared(latent_data_1, latent_data_1)* self.temperature,
-            gamma=self._CalGamma(v_latent),
-            v=v_latent,
-        )
-        sim_ab = self._Similarity_old(
-            dist=self._DistanceSquared(latent_data_2, latent_data_2)* self.temperature,
-            gamma=self._CalGamma(v_latent),
-            v=v_latent,
-        )
+        # sim_aa = self._Similarity_old(
+        #     dist=self._DistanceSquared(latent_data_1, latent_data_2)* self.temperature,
+        #     gamma=self._CalGamma(v_latent),
+        #     v=v_latent,
+        # )
+        # sim_bb = self._Similarity_old(
+        #     dist=self._DistanceSquared(latent_data_1, latent_data_1)* self.temperature,
+        #     gamma=self._CalGamma(v_latent),
+        #     v=v_latent,
+        # )
+        # sim_ab = self._Similarity_old(
+        #     dist=self._DistanceSquared(latent_data_2, latent_data_2)* self.temperature,
+        #     gamma=self._CalGamma(v_latent),
+        #     v=v_latent,
+        # )
 
 
         # loss = self._TwowaydivergenceLoss(P_=P_2, Q_=Q_2)
@@ -188,12 +188,12 @@ class InfoNCEZL(nn.Module):
         # p = torch.diagonal(sim_bab)
         
         
-        # features_a = features[:batch_size]
-        # features_b = features[batch_size:]
+        features_a = features[:batch_size]
+        features_b = features[batch_size:]
 
-        # sim_aa = 1 / (torch.cdist(features_a, features_a) * self.temperature).square().add(1)
-        # sim_bb = 1 / (torch.cdist(features_b, features_b) * self.temperature).square().add(1)
-        # sim_ab = 1 / (torch.cdist(features_a, features_b) * self.temperature).square().add(1)
+        sim_aa = 1 / (torch.cdist(features_a, features_a) * self.temperature).square().add(1)
+        sim_bb = 1 / (torch.cdist(features_b, features_b) * self.temperature).square().add(1)
+        sim_ab = 1 / (torch.cdist(features_a, features_b) * self.temperature).square().add(1)
 
         tempered_alignment = (torch.diagonal(sim_ab).log()).mean()
 
