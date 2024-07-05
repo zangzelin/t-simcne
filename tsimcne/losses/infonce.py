@@ -146,7 +146,6 @@ class InfoNCEZL(nn.Module):
         
         batch_size = features.size(0) // 2
 
-
         data_1 = backbone_features[:batch_size]
         dis_P = self._DistanceSquared(data_1, data_1)
         latent_data_1 = features[:batch_size]
@@ -155,6 +154,7 @@ class InfoNCEZL(nn.Module):
         gamma = self._CalGamma(v_input)
         P_2 = self._Similarity_old(dist=dis_P_2, gamma=gamma, v=v_input)
         latent_data_2 = features[batch_size:]
+        
         dis_Q_2 = self._DistanceSquared(latent_data_1, latent_data_2)
         Q_2 = self._Similarity_old(
             dist=dis_Q_2,
