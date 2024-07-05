@@ -142,26 +142,39 @@ class InfoNCEZL(nn.Module):
     def forward(self, features, backbone_features=None, labels=None):
         # backbone_features and labels are unused
         v_input=100
-        v_latent=0.001
+        v_latent=0.1
         
         batch_size = features.size(0) // 2
 
-        data_1 = backbone_features[:batch_size]
-        dis_P = self._DistanceSquared(data_1, data_1)
-        latent_data_1 = features[:batch_size]
-        dis_P_2 = dis_P  # + nndistance.reshape(1, -1)
+        # data_1 = backbone_features[:batch_size]
+        # dis_P = self._DistanceSquared(data_1, data_1)
+        # dis_P_2 = dis_P  # + nndistance.reshape(1, -1)
         
-        gamma = self._CalGamma(v_input)
-        P_2 = self._Similarity_old(dist=dis_P_2, gamma=gamma, v=v_input)
+        # gamma = self._CalGamma(v_input)
+        # P_2 = self._Similarity_old(dist=dis_P_2, gamma=gamma, v=v_input)
+        
+        latent_data_1 = features[:batch_size]
         latent_data_2 = features[batch_size:]
         
-        dis_Q_2 = self._DistanceSquared(latent_data_1, latent_data_2)
-        Q_2 = self._Similarity_old(
-            dist=dis_Q_2,
+        # dis_Q_2 = 
+        sim_aa = self._Similarity_old(
+            dist=self._DistanceSquared(latent_data_1, latent_data_2),
             gamma=self._CalGamma(v_latent),
             v=v_latent,
         )
-        loss = self._TwowaydivergenceLoss(P_=P_2, Q_=Q_2)
+        sim_bb = self._Similarity_old(
+            dist=self._DistanceSquared(latent_data_1, latent_data_1),
+            gamma=self._CalGamma(v_latent),
+            v=v_latent,
+        )
+        sim_ab = self._Similarity_old(
+            dist=self._DistanceSquared(latent_data_2, latent_data_2),
+            gamma=self._CalGamma(v_latent),
+            v=v_latent,
+        )
+
+
+        # loss = self._TwowaydivergenceLoss(P_=P_2, Q_=Q_2)
 
         # import pdb; pdb.set_trace()
         
@@ -182,19 +195,19 @@ class InfoNCEZL(nn.Module):
         # sim_bb = 1 / (torch.cdist(features_b, features_b) * self.temperature).square().add(1)
         # sim_ab = 1 / (torch.cdist(features_a, features_b) * self.temperature).square().add(1)
 
-        # tempered_alignment = (torch.diagonal(sim_ab).log()).mean()
+        tempered_alignment = (torch.diagonal(sim_ab).log()).mean()
 
-        # # exclude self inner product
-        # self_mask = torch.eye(batch_size, dtype=bool, device=sim_aa.device)
-        # sim_aa.masked_fill_(self_mask, 0.0)
-        # sim_bb.masked_fill_(self_mask, 0.0)
+        # exclude self inner product
+        self_mask = torch.eye(batch_size, dtype=bool, device=sim_aa.device)
+        sim_aa.masked_fill_(self_mask, 0.0)
+        sim_bb.masked_fill_(self_mask, 0.0)
 
-        # logsumexp_1 = torch.hstack((sim_ab.T, sim_bb)).sum(1).log_().mean()
-        # logsumexp_2 = torch.hstack((sim_aa, sim_ab)).sum(1).log_().mean()
+        logsumexp_1 = torch.hstack((sim_ab.T, sim_bb)).sum(1).log_().mean()
+        logsumexp_2 = torch.hstack((sim_aa, sim_ab)).sum(1).log_().mean()
 
-        # raw_uniformity = logsumexp_1 + logsumexp_2
+        raw_uniformity = logsumexp_1 + logsumexp_2
 
-        # loss = -(self.exaggeration * tempered_alignment - raw_uniformity / 2)
+        loss = -(self.exaggeration * tempered_alignment - raw_uniformity / 2)
         return loss
 
 class InfoNCEGaussian(InfoNCECauchy):
