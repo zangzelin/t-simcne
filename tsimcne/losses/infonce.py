@@ -151,6 +151,7 @@ class InfoNCEZL(nn.Module):
         dis_P = self._DistanceSquared(data_1, data_1)
         latent_data_1 = features[:batch_size]
         dis_P_2 = dis_P  # + nndistance.reshape(1, -1)
+        
         gamma = self._CalGamma(v_input)
         P_2 = self._Similarity_old(dist=dis_P_2, gamma=gamma, v=v_input)
         latent_data_2 = features[batch_size:]
