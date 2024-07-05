@@ -142,7 +142,7 @@ class InfoNCEZL(nn.Module):
     def forward(self, features, backbone_features=None, labels=None):
         # backbone_features and labels are unused
         v_input=100
-        v_latent=1
+        v_latent=0.01
         
         batch_size = features.size(0) // 2
 
