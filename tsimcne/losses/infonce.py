@@ -158,17 +158,17 @@ class InfoNCEZL(nn.Module):
         
         # dis_Q_2 = 
         sim_aa = self._Similarity_old(
-            dist=self._DistanceSquared(latent_data_1, latent_data_2),
+            dist=self._DistanceSquared(latent_data_1, latent_data_2)* self.temperature,
             gamma=self._CalGamma(v_latent),
             v=v_latent,
         )
         sim_bb = self._Similarity_old(
-            dist=self._DistanceSquared(latent_data_1, latent_data_1),
+            dist=self._DistanceSquared(latent_data_1, latent_data_1)* self.temperature,
             gamma=self._CalGamma(v_latent),
             v=v_latent,
         )
         sim_ab = self._Similarity_old(
-            dist=self._DistanceSquared(latent_data_2, latent_data_2),
+            dist=self._DistanceSquared(latent_data_2, latent_data_2)* self.temperature,
             gamma=self._CalGamma(v_latent),
             v=v_latent,
         )
